@@ -1,0 +1,23 @@
+/*
+Dependencies:
+    System: JetBrains Mono font, Golang (gopls)
+    Plugins: golang.Go, a-h.templ, bradlc.vscode-tailwindcss
+*/
+{
+    "editor.fontFamily": "'JetBrains Mono'",
+    "terminal.integrated.fontFamily": "'JetBrains Mono'",
+    "gopls": {
+        "ui.semanticTokens": true
+    },
+    "editor.formatOnSave": true,
+    "[templ]": {
+        "editor.defaultFormatter": "a-h.templ"
+    },
+    "tailwindCSS.includeLanguages": {
+        "templ": "html"
+    },
+    "emmet.includeLanguages": {
+        "templ": "html"
+    },
+    "go.toolsManagement.autoUpdate": true,
+}
