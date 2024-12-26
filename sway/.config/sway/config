@@ -1,28 +1,36 @@
 
-# A config for sway
+# Sway main config file
 
 #
-# Dependencies: foot, bemenu, pipewire, slurpshot, swayidle, acpilight
 # Read `man 5 sway` for a complete reference.
 #
 
-## Variables
+## Main definitions
 
-### Logo key.
+### Logo key
+
 set $mod Mod4
 
 ### Your preferred applications
+
 set $term foot
 set $menu bemenu-run --no-exec --line-height 26 | xargs -r swaymsg exec --
 
-### Home row direction keys, like vim
+### Default wallpaper
+
+set $wallpaper ~/.config/sway/static/gentoo-cow-gdm.png
+
+### Home row direction keys
+
 set $left h
 set $down j
 set $up k
 set $right l
 
 ## At startup
-exec --no-startup-id dbus-update-activation-environment --all
+
+# Source: https://github.com/swaywm/sway/wiki#systemd-and-dbus-activation-environments
+exec dbus-update-activation-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK I3SOCK XCURSOR_SIZE XCURSOR_THEME
 exec gentoo-pipewire-launcher restart &
 
 ## Output configuration
@@ -36,7 +44,7 @@ exec gentoo-pipewire-launcher restart &
 #
 
 ### Set background image
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+output * bg $wallpaper fill
 
 ### Personal monitor
 output HDMI-A-1 resolution 1920x1080@144.001Hz
