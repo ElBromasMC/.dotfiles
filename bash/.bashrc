@@ -10,9 +10,19 @@
 # past this point for scp and rcp, and it's important to refrain from
 # outputting anything in those cases.
 if [[ $- != *i* ]] ; then
-	# Shell is non-interactive.  Be done now!
-	return
+    # Shell is non-interactive.  Be done now!
+    return
 fi
 
+# Configure tab completion
+# Source: https://wiki.gentoo.org/wiki/Doas#Bash_tab_completion
+complete -F _root_command doas
+
+
 alias vim='nvim'
+alias top='htop'
+alias ssh='TERM=xterm-256color ssh'
+
+alias poweroff='doas /sbin/poweroff'
+alias reboot='doas /sbin/reboot'
 

@@ -1,0 +1,14 @@
+
+# Title bar configuration
+
+font pango:JetBrains Mono 10
+
+# Personal monitor
+
+output HDMI-A-1 resolution 1920x1080@144.001Hz
+
+# Miscellaneous
+
+floating_modifier $mod normal
+hide_edge_borders --i3 smart
+

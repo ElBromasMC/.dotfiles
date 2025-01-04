@@ -1,0 +1,30 @@
+
+# Key bindings
+
+## For your favorite programs
+
+bindsym $mod+Return exec $term
+bindsym $mod+d exec $menu
+bindsym Print exec slurpshot
+
+## For sound volume
+
+bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_SINK@ 5%-
+
+## For eDP-1 (laptop screen) toggle
+
+bindsym $mod+Shift+m exec swaymsg 'output eDP-1 toggle'
+
+## For screen brightness
+
+#bindsym XF86MonBrightnessDown exec xbacklight -dec 2
+#bindsym XF86MonBrightnessUp exec xbacklight -inc 4
+
+## For Sway
+
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+e exec swaynag -t warning -m \
+    'Do you really want to exit sway?' -B 'Yes, exit sway' 'swaymsg exit'
+
