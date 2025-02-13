@@ -6,8 +6,8 @@
 #
 
 bar {
+    status_command while ~/.config/sway/scripts/statusbar.sh; do sleep 5; done
     position bottom
-    status_command while date +'%Y-%m-%d %X'; do sleep 1; done
     colors {
         statusline #ffffff
         background #000000AA
