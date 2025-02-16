@@ -19,7 +19,8 @@ set_path(){
 }
 
 # Set custom PATH
-set_path ~/.local/bin ~/go/bin ~/.cargo/bin /var/lib/flatpak/exports/bin
+set_path ~/.local/bin ~/go/bin ~/.cargo/bin
+set_path ~/.local/share/flatpak/exports/bin /var/lib/flatpak/exports/bin
 
 # Set and create a dumb runtime dir if not defined
 if test -z "${XDG_RUNTIME_DIR}"; then
@@ -40,8 +41,8 @@ fi
 
 # Start Sway on tty1
 if [ -z "${WAYLAND_DISPLAY}" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    export ELECTRON_OZONE_PLATFORM_HINT=wayland
     export XDG_CURRENT_DESKTOP=sway
+    export ELECTRON_OZONE_PLATFORM_HINT=wayland
     # Test vulkan renderer
     #export WLR_RENDERER=vulkan
     exec dbus-run-session sway > ~/sway.log 2>&1
