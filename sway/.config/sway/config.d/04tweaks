@@ -12,7 +12,7 @@ for_window [app_id = "floating_update"] floating enable, resize set width 1000px
 #for_window [class = "(?i)pinentry"] floating enable
 for_window [title = "Administrator privileges required"] floating enable
 
-## For Firefox
+## Firefox
 
 for_window [title = "About Mozilla Firefox"] floating enable
 #for_window [window_role = "About"] floating enable

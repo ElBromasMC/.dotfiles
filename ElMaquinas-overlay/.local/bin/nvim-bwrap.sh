@@ -1,0 +1,52 @@
+#!/bin/bash
+
+bwrap \
+--symlink usr/lib /lib \
+--symlink usr/bin /bin \
+--symlink usr/bin /sbin \
+--ro-bind /usr/lib /usr/lib \
+--ro-bind /usr/bin /usr/bin \
+--ro-bind /usr/libexec/git-core /usr/libexec/git-core \
+--ro-bind /usr/share/ca-certificates /usr/share/ca-certificates \
+--ro-bind /usr/share/i18n/locales /usr/share/i18n/locales \
+--ro-bind /usr/share/terminfo /usr/share/terminfo \
+--ro-bind /usr/share/foot /usr/share/foot \
+--ro-bind /usr/share/nvim /usr/share/nvim \
+--ro-bind /usr/share/X11/xkb /usr/share/X11/xkb \
+--ro-bind /usr/share/X11/locale /usr/share/X11/locale \
+--ro-bind /usr/share/fonts /usr/share/fonts \
+--ro-bind /usr/share/git-core /usr/share/git-core \
+--ro-bind /usr/share/lua /usr/share/lua \
+--ro-bind /usr/share/luajit-2.1 /usr/share/luajit-2.1 \
+--ro-bind /usr/include /usr/include \
+--ro-bind /etc/ld-musl-aarch64.path /etc/ld-musl-aarch64.path \
+--ro-bind /etc/ssl /etc/ssl \
+--ro-bind /etc/resolv.conf /etc/resolv.conf \
+--ro-bind /etc/fonts /etc/fonts \
+--ro-bind /etc/vim /etc/vim \
+--tmpfs /tmp \
+--dir "$XDG_RUNTIME_DIR" \
+--ro-bind "$XDG_RUNTIME_DIR/wayland-1" "$XDG_RUNTIME_DIR/wayland-1" \
+--dev /dev \
+--proc /proc \
+--tmpfs "$HOME" \
+--ro-bind "$HOME/sandbox/nvim/.bashrc" "$HOME/.bashrc" \
+--ro-bind "$HOME/.config/foot" "$HOME/.config/foot" \
+--bind "$HOME/sandbox/nvim/.config/nvim" "$HOME/.config/nvim" \
+--bind "$HOME/sandbox/nvim/.local/share" "$HOME/.local/share" \
+--bind "$HOME/sandbox/nvim/.local/state" "$HOME/.local/state" \
+--bind "$HOME/sandbox/nvim/.cache" "$HOME/.cache" \
+--bind "$HOME/sandbox/nvim/go" "$HOME/go" \
+--bind "$HOME/sandbox/nvim/.npm-global" "$HOME/.npm-global" \
+--bind "$HOME/Documents/projects" "$HOME/Documents/projects" \
+--setenv PATH "/usr/bin:/usr/lib/llvm/19/bin:$HOME/go/bin:$HOME/.npm-global/bin" \
+--setenv CC "clang" \
+--setenv LD "ld.lld" \
+--setenv NPM_CONFIG_PREFIX "$HOME/.npm-global" \
+--hostname RESTRICTED \
+--unshare-all \
+--share-net \
+--die-with-parent \
+--new-session \
+/usr/bin/foot
+

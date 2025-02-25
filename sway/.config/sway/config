@@ -13,11 +13,14 @@ set $mod Mod4
 ## Your preferred applications
 
 set $term foot
-set $menu bemenu-run --no-exec --line-height 26 | xargs -r swaymsg exec --
+set $menu wmenu-run
+set $screenshot ${HOME}/.local/bin/slurpshot.sh
+set $browser ${HOME}/.local/bin/firefox-bwrap.sh
+set $editor ${HOME}/.local/bin/nvim-bwrap.sh
 
 ## Default wallpaper
 
-set $wallpaper ~/.config/sway/static/gentoo-cow-gdm.png
+set $wallpaper ${HOME}/.config/sway/static/gentoo-cow-gdm.png
 
 ## Home row direction keys
 

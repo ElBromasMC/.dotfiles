@@ -6,7 +6,7 @@
 #
 
 bar {
-    status_command while ~/.config/sway/scripts/statusbar.sh; do sleep 5; done
+    status_command while ${HOME}/.config/sway/scripts/statusbar.sh; do sleep 5; done
     position bottom
     colors {
         statusline #ffffff
