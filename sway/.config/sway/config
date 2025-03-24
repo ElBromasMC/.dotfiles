@@ -14,9 +14,8 @@ set $mod Mod4
 
 set $term foot
 set $menu wmenu-run
-set $screenshot ${HOME}/.local/bin/slurpshot.sh
-set $browser ${HOME}/.local/bin/firefox-bwrap.sh
-set $editor ${HOME}/.local/bin/nvim-bwrap.sh
+set $screenshot grimshot savecopy anything
+set $browser firefox-bwrap
 
 ## Default wallpaper
 

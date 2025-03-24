@@ -18,7 +18,6 @@ fi
 # Source: https://wiki.gentoo.org/wiki/Doas#Bash_tab_completion
 complete -F _root_command doas
 
-
 alias vim='nvim'
 alias top='htop'
 alias ssh='TERM=xterm-256color ssh'

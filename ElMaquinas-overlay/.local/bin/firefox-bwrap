@@ -26,7 +26,7 @@ bwrap \
 --tmpfs /tmp \
 --dir "$XDG_RUNTIME_DIR" \
 --ro-bind "$XDG_RUNTIME_DIR/pulse" "$XDG_RUNTIME_DIR/pulse" \
---ro-bind "$XDG_RUNTIME_DIR/wayland-1" "$XDG_RUNTIME_DIR/wayland-1" \
+--ro-bind "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" \
 --dev /dev \
 --dev-bind /dev/dri /dev/dri \
 --ro-bind /sys/dev/char /sys/dev/char \

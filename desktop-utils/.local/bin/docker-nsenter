@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Run a command in a specific network namespace.
+NAMESPACE="${DOCKER_NS:-docker-netns}"
+exec doas /usr/bin/ip netns exec "$NAMESPACE" \
+    /usr/bin/doas -u "$(id -un)" -- "$@"
+

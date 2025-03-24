@@ -1,0 +1,64 @@
+#!/usr/bin/bash
+
+NEOVIM_HOME="$HOME/sandbox/nvim"
+
+mkdir -p $NEOVIM_HOME
+
+bwrap_arguments=(
+    # Isolation
+    --die-with-parent
+    --unshare-all
+    --share-net
+    --hostname neovim
+    #--new-session
+
+    # Create environment
+    --tmpfs /tmp
+    --proc /proc
+    --dev /dev
+    --dir "$XDG_RUNTIME_DIR"
+    --dir "$HOME"
+    --bind "$NEOVIM_HOME" "$HOME"
+    --symlink /usr/lib /lib
+    --symlink /usr/bin /bin
+    --symlink /usr/bin /sbin
+    --setenv CC "clang"
+    --setenv LD "ld.lld"
+    --setenv NPM_CONFIG_PREFIX "$HOME/.npm-global"
+    --setenv PATH "/usr/bin:/usr/lib/llvm/19/bin:$HOME/go/bin:$HOME/.npm-global/bin:$HOME/.local/bin"
+
+    # Read only binds
+    --ro-bind /usr/lib /usr/lib
+    --ro-bind /usr/bin /usr/bin
+    --ro-bind /usr/include /usr/include
+    --ro-bind /usr/libexec/git-core /usr/libexec/git-core
+
+    --ro-bind /usr/share/ca-certificates /usr/share/ca-certificates
+    --ro-bind /usr/share/i18n/locales /usr/share/i18n/locales
+    --ro-bind /usr/share/terminfo /usr/share/terminfo
+    --ro-bind /usr/share/nvim /usr/share/nvim
+    --ro-bind /usr/share/fonts /usr/share/fonts
+    --ro-bind /usr/share/git-core /usr/share/git-core
+    --ro-bind /usr/share/lua /usr/share/lua
+    --ro-bind /usr/share/luajit-2.1 /usr/share/luajit-2.1
+
+    --ro-bind /etc/ld-musl-aarch64.path /etc/ld-musl-aarch64.path
+    --ro-bind /etc/ssl /etc/ssl
+    --ro-bind /etc/resolv.conf /etc/resolv.conf
+    --ro-bind /etc/fonts /etc/fonts
+    --ro-bind /etc/vim /etc/vim
+
+    --ro-bind "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"
+    --ro-bind "/tmp/tmux-$UID" "/tmp/tmux-$UID"
+
+    # Device binds
+
+    # Read write binds
+    --bind "$HOME/Documents/projects" "$HOME/Documents/projects"
+
+    # Miscellaneous
+    --chdir "$(pwd)"
+)
+
+exec bwrap "${bwrap_arguments[@]}" /usr/bin/bash "$@"
+
