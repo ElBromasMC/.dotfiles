@@ -32,6 +32,11 @@ if test -z "${XDG_RUNTIME_DIR}"; then
     fi
 fi
 
+export EDITOR=/bin/nvim
+export VISUAL=/bin/nvim
+
+
+
 #
 # This file is sourced by bash for login shells.  The following line
 # runs your .bashrc and is recommended by the bash info pages.
