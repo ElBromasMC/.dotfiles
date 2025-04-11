@@ -61,5 +61,5 @@ bwrap_arguments=(
     --chdir "$(pwd)"
 )
 
-exec bwrap "${bwrap_arguments[@]}" /usr/bin/bash "$@"
+exec bwrap "${bwrap_arguments[@]}" -- /usr/bin/bash "$@"
 

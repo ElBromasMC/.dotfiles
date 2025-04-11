@@ -35,6 +35,8 @@ fi
 export EDITOR=/bin/nvim
 export VISUAL=/bin/nvim
 
+export COMPOSE_PROVIDER=/bin/podman-compose
+
 
 
 #
