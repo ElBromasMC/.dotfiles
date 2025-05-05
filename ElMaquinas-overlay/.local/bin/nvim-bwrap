@@ -48,6 +48,7 @@ bwrap_arguments=(
     --ro-bind /etc/fonts /etc/fonts
     --ro-bind /etc/vim /etc/vim
 
+    --ro-bind-try "$HOME/.config/nvim" "$HOME/.config/nvim"
     --ro-bind-try "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"
     --ro-bind-try "/tmp/tmux-$UID" "/tmp/tmux-$UID"
 

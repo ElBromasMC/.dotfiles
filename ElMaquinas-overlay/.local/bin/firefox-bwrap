@@ -1,47 +1,132 @@
-#!/bin/bash
+#!/usr/bin/bash
 
-bwrap \
---symlink usr/lib /lib \
---symlink usr/bin /bin \
---symlink usr/bin /sbin \
---ro-bind /usr/lib /usr/lib \
---ro-bind /usr/bin /usr/bin \
---ro-bind /etc/ld-musl-aarch64.path /etc/ld-musl-aarch64.path \
---ro-bind /usr/lib/firefox /usr/lib/firefox \
---ro-bind /usr/share/applications /usr/share/applications \
---ro-bind /usr/share/gtk-3.0 /usr/share/gtk-3.0 \
---ro-bind /usr/share/icu /usr/share/icu \
---ro-bind /usr/share/drirc.d /usr/share/drirc.d \
---ro-bind /usr/share/fonts /usr/share/fonts \
---ro-bind /usr/share/glib-2.0 /usr/share/glib-2.0 \
---ro-bind /usr/share/glvnd /usr/share/glvnd \
---ro-bind /usr/share/icons /usr/share/icons \
---ro-bind /usr/share/mime /usr/share/mime \
---ro-bind /usr/share/X11/xkb /usr/share/X11/xkb \
---ro-bind /usr/share/icons /usr/share/icons \
---ro-bind /etc/fonts /etc/fonts \
---ro-bind /etc/resolv.conf /etc/resolv.conf \
---ro-bind /usr/share/ca-certificates /usr/share/ca-certificates \
---ro-bind /etc/ssl /etc/ssl \
---tmpfs /tmp \
---dir "$XDG_RUNTIME_DIR" \
---ro-bind "$XDG_RUNTIME_DIR/pulse" "$XDG_RUNTIME_DIR/pulse" \
---ro-bind "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" \
---dev /dev \
---dev-bind /dev/dri /dev/dri \
---ro-bind /sys/dev/char /sys/dev/char \
---ro-bind /sys/devices/platform /sys/devices/platform \
---proc /proc \
---bind "/home/${USER}/.mozilla" "/home/${USER}/.mozilla" \
---bind "/home/${USER}/Downloads" "/home/${USER}/Downloads" \
---setenv HOME "/home/${USER}" \
---setenv GTK_THEME Adwaita:dark \
---setenv MOZ_ENABLE_WAYLAND 1 \
---setenv PATH /usr/bin \
---hostname RESTRICTED \
---unshare-all \
---share-net \
---die-with-parent \
---new-session \
-/usr/bin/firefox --no-remote
+# User modifiable variables
+APP_NAME="org.mozilla.firefox"
+FIREFOX_HOME="$HOME/sandbox/firefox"
+
+# Check requirements
+if [ -z "$APP_NAME" ] || [ -z "$FIREFOX_HOME" ]; then
+    echo "One or more user defined variables are not set or empty."
+    exit 1
+fi
+
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ] || [ -z "$XDG_RUNTIME_DIR" ] || [ -z "$WAYLAND_DISPLAY" ]; then
+    echo "One or more required environment variables are not set or empty."
+    exit 1
+fi
+
+# Internal variables
+DBUS_PATH="$(echo "$DBUS_SESSION_BUS_ADDRESS" | cut -d, -f1 | sed 's|^unix:path=||')"
+APP_FOLDER="$XDG_RUNTIME_DIR/app/$APP_NAME"
+APP_SOCKET="$APP_FOLDER/bus-$$"
+
+# Ensure that the xdg proxy is properly closed
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
+# Create required folders
+mkdir -p "$APP_FOLDER"
+mkdir -p "$FIREFOX_HOME"
+
+proxy_bwrap_arguments=(
+    # Isolation
+    --die-with-parent
+    --unshare-all
+    --hostname proxy
+    --new-session
+
+    # Create environment
+    --symlink /usr/lib /lib
+    --symlink /usr/bin /bin
+
+    # Read only binds
+    --ro-bind /usr/lib /usr/lib
+    --ro-bind /usr/bin /usr/bin
+    --ro-bind "$DBUS_PATH" "$DBUS_PATH"
+
+    # Read write binds
+    --bind "$APP_FOLDER" "$APP_FOLDER"
+    
+    --
+
+    env -i xdg-dbus-proxy "$DBUS_SESSION_BUS_ADDRESS" "$APP_SOCKET"
+    --filter
+    #--log
+    # Allow screen sharing
+    --talk=org.freedesktop.portal.Desktop
+    --talk=org.freedesktop.portal.ScreenCast
+    --talk=org.freedesktop.portal.Screenshot
+)
+
+firefox_bwrap_arguments=(
+    # Isolation
+    --die-with-parent
+    --unshare-all
+    --share-net
+    --hostname firefox
+    --new-session
+
+    # Create environment
+    --tmpfs /tmp
+    --proc /proc
+    --dev /dev
+    --dir "$XDG_RUNTIME_DIR"
+    --dir "$HOME"
+    --bind "$FIREFOX_HOME" "$HOME"
+    --symlink /usr/lib /lib
+    --symlink /usr/bin /bin
+    --symlink /usr/bin /sbin
+    --setenv HOME "$HOME"
+    --setenv GTK_THEME Adwaita:dark
+    --setenv MOZ_ENABLE_WAYLAND 1
+    --setenv PATH /usr/bin
+
+    # Read only binds
+    --ro-bind /usr/lib /usr/lib
+    --ro-bind /usr/bin /usr/bin
+    --ro-bind /etc/ld-musl-aarch64.path /etc/ld-musl-aarch64.path
+    --ro-bind /usr/lib/firefox /usr/lib/firefox
+    --ro-bind /usr/share/applications /usr/share/applications
+    --ro-bind /usr/share/gtk-3.0 /usr/share/gtk-3.0
+    --ro-bind /usr/share/icu /usr/share/icu
+    --ro-bind /usr/share/drirc.d /usr/share/drirc.d
+    --ro-bind /usr/share/fonts /usr/share/fonts
+    --ro-bind /usr/share/glib-2.0 /usr/share/glib-2.0
+    --ro-bind /usr/share/glvnd /usr/share/glvnd
+    --ro-bind /usr/share/icons /usr/share/icons
+    --ro-bind /usr/share/mime /usr/share/mime
+    --ro-bind /usr/share/X11/xkb /usr/share/X11/xkb
+    --ro-bind /usr/share/icons /usr/share/icons
+    --ro-bind /etc/fonts /etc/fonts
+    --ro-bind /etc/resolv.conf /etc/resolv.conf
+    --ro-bind /usr/share/ca-certificates /usr/share/ca-certificates
+    --ro-bind /etc/ssl /etc/ssl
+    --ro-bind /sys/dev/char /sys/dev/char
+    --ro-bind /sys/devices/platform /sys/devices/platform # Rockchip specific
+    --ro-bind "$XDG_RUNTIME_DIR/pulse" "$XDG_RUNTIME_DIR/pulse"
+    --ro-bind "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"
+
+    # Device binds
+    --dev-bind /dev/dri /dev/dri
+
+    # Read write binds
+
+    # Miscellaneous
+    # Allow access to portals
+    --ro-bind "$APP_SOCKET" "$DBUS_PATH"
+    # Required for screen sharing in Sway WM
+    --ro-bind /usr/share/pipewire /usr/share/pipewire
+
+    --
+
+    /usr/bin/firefox
+    --no-remote
+    "$@"
+)
+
+bwrap "${proxy_bwrap_arguments[@]}" &
+sleep 0.1
+bwrap "${firefox_bwrap_arguments[@]}"
+
+# Cleanup
+rm -f "$APP_SOCKET"
 

@@ -1,2 +1,3 @@
-require("elbromasmc")
+
+require('elbromasmc')
 
