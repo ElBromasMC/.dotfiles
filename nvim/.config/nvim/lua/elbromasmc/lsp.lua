@@ -34,6 +34,7 @@ vim.lsp.enable({
     'templ_ls',
     'tailwind',
     'pyright',
+    'texlab',
     --'html_ls',
 })
 

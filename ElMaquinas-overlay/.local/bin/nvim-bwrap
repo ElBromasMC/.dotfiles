@@ -25,7 +25,7 @@ bwrap_arguments=(
     --setenv CC "clang"
     --setenv LD "ld.lld"
     --setenv NPM_CONFIG_PREFIX "$HOME/.npm-global"
-    --setenv PATH "/usr/bin:/usr/lib/llvm/19/bin:$HOME/go/bin:$HOME/.npm-global/bin:$HOME/.local/bin"
+    --setenv PATH "/usr/bin:/usr/lib/llvm/19/bin:$HOME/go/bin:$HOME/.npm-global/bin:$HOME/.cargo/bin:$HOME/.local/bin"
 
     # Read only binds
     --ro-bind /usr/lib /usr/lib
@@ -35,18 +35,24 @@ bwrap_arguments=(
 
     --ro-bind /usr/share/ca-certificates /usr/share/ca-certificates
     --ro-bind /usr/share/i18n/locales /usr/share/i18n/locales
+    --ro-bind /usr/share/cursors /usr/share/cursors
     --ro-bind /usr/share/terminfo /usr/share/terminfo
     --ro-bind /usr/share/nvim /usr/share/nvim
     --ro-bind /usr/share/fonts /usr/share/fonts
     --ro-bind /usr/share/git-core /usr/share/git-core
     --ro-bind /usr/share/lua /usr/share/lua
     --ro-bind /usr/share/luajit-2.1 /usr/share/luajit-2.1
+    --ro-bind /usr/share/X11/xkb /usr/share/X11/xkb
+    --ro-bind /usr/share/texmf-dist /usr/share/texmf-dist
+    --ro-bind /usr/share/mime /usr/share/mime
 
     --ro-bind /etc/ld-musl-aarch64.path /etc/ld-musl-aarch64.path
     --ro-bind /etc/ssl /etc/ssl
     --ro-bind /etc/resolv.conf /etc/resolv.conf
     --ro-bind /etc/fonts /etc/fonts
     --ro-bind /etc/vim /etc/vim
+
+    --ro-bind /var/lib/texmf /var/lib/texmf
 
     --ro-bind-try "$HOME/.config/nvim" "$HOME/.config/nvim"
     --ro-bind-try "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"

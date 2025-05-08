@@ -13,6 +13,7 @@ vim.opt.smartindent = true
 
 -- Menu
 vim.opt.completeopt = 'menu,menuone,noinsert,popup,fuzzy'
+--vim.opt.completeopt = 'menu,menuone,popup,fuzzy'
 vim.opt.pumheight = 9
 vim.opt.winborder = 'single'
 
