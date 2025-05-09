@@ -1,8 +1,58 @@
 #!/usr/bin/bash
 
+# User modifiable variables
+APP_NAME="io.neovim.nvim"
 NEOVIM_HOME="$HOME/sandbox/nvim"
 
-mkdir -p $NEOVIM_HOME
+# Check requirements
+if [ -z "$APP_NAME" ] || [ -z "$NEOVIM_HOME" ]; then
+    echo "One or more user defined variables are not set or empty."
+    exit 1
+fi
+
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ] || [ -z "$XDG_RUNTIME_DIR" ] || [ -z "$WAYLAND_DISPLAY" ]; then
+    echo "One or more required environment variables are not set or empty."
+    exit 1
+fi
+
+# Internal variables
+DBUS_PATH="$(echo "$DBUS_SESSION_BUS_ADDRESS" | cut -d, -f1 | sed 's|^unix:path=||')"
+APP_FOLDER="$XDG_RUNTIME_DIR/app/$APP_NAME"
+APP_SOCKET="$APP_FOLDER/bus-$$"
+
+# Ensure that the xdg proxy is properly closed
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
+# Create required folders
+mkdir -p "$APP_FOLDER"
+mkdir -p "$NEOVIM_HOME"
+
+proxy_bwrap_arguments=(
+    # Isolation
+    --die-with-parent
+    --unshare-all
+    --hostname proxy
+    --new-session
+
+    # Create environment
+    --symlink /usr/lib /lib
+    --symlink /usr/bin /bin
+
+    # Read only binds
+    --ro-bind /usr/lib /usr/lib
+    --ro-bind /usr/bin /usr/bin
+    --ro-bind "$DBUS_PATH" "$DBUS_PATH"
+
+    # Read write binds
+    --bind "$APP_FOLDER" "$APP_FOLDER"
+    
+    --
+
+    env -i xdg-dbus-proxy "$DBUS_SESSION_BUS_ADDRESS" "$APP_SOCKET"
+    --filter
+    #--log
+    --own=org.pwmt.zathura.*
+)
 
 bwrap_arguments=(
     # Isolation
@@ -43,20 +93,22 @@ bwrap_arguments=(
     --ro-bind /usr/share/lua /usr/share/lua
     --ro-bind /usr/share/luajit-2.1 /usr/share/luajit-2.1
     --ro-bind /usr/share/X11/xkb /usr/share/X11/xkb
-    --ro-bind /usr/share/texmf-dist /usr/share/texmf-dist
     --ro-bind /usr/share/mime /usr/share/mime
+    --ro-bind /usr/share/texmf-dist /usr/share/texmf-dist
+    --ro-bind /usr/share/texmf-site /usr/share/texmf-site
 
     --ro-bind /etc/ld-musl-aarch64.path /etc/ld-musl-aarch64.path
     --ro-bind /etc/ssl /etc/ssl
     --ro-bind /etc/resolv.conf /etc/resolv.conf
     --ro-bind /etc/fonts /etc/fonts
     --ro-bind /etc/vim /etc/vim
+    --ro-bind /etc/texmf /etc/texmf
 
     --ro-bind /var/lib/texmf /var/lib/texmf
 
     --ro-bind-try "$HOME/.config/nvim" "$HOME/.config/nvim"
+    --ro-bind-try "$HOME/.config/zathura" "$HOME/.config/zathura"
     --ro-bind-try "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"
-    --ro-bind-try "/tmp/tmux-$UID" "/tmp/tmux-$UID"
 
     # Device binds
 
@@ -66,7 +118,19 @@ bwrap_arguments=(
 
     # Miscellaneous
     --chdir "$(pwd)"
+    # Allow access to portals
+    --ro-bind-try "$APP_SOCKET" "$DBUS_PATH"
+
+    --
+
+    /usr/bin/bash
+    "$@"
 )
 
-exec bwrap "${bwrap_arguments[@]}" -- /usr/bin/bash "$@"
+bwrap "${proxy_bwrap_arguments[@]}" &
+sleep 0.1
+bwrap "${bwrap_arguments[@]}"
+
+# Cleanup
+rm -f "$APP_SOCKET"
 

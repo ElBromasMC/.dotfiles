@@ -27,12 +27,31 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Diagnostics
 vim.diagnostic.config({ virtual_lines = true })
 
+-- Custom configuration
+vim.lsp.config('texlab', {
+    settings = {
+        texlab = {
+            build = {
+                executable = 'latexmk',
+                args = { '-pdf', '-interaction=nonstopmode', '-synctex=1', '%f' },
+                onSave = true,
+                forwardSearchAfter = false,
+            },
+            forwardSearch = {
+                executable = 'zathura',
+                args = { '--synctex-forward', '%l:1:%f', '%p' },
+            },
+            diagnosticsDelay = 1500,
+        },
+    },
+})
+
 -- Enable configured language servers
 vim.lsp.enable({
     'clangd',
     'gopls',
-    'templ_ls',
-    'tailwind',
+    'templ',
+    'tailwindcss',
     'pyright',
     'texlab',
     --'html_ls',

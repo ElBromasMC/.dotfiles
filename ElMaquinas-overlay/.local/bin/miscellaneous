@@ -41,6 +41,8 @@ bwrap_arguments=(
     --ro-bind /usr/share/cmake /usr/share/cmake
     --ro-bind /usr/share/lua /usr/share/lua
     --ro-bind /usr/share/luajit-2.1 /usr/share/luajit-2.1
+    --ro-bind /usr/share/X11/xkb /usr/share/X11/xkb
+    --ro-bind /usr/share/mime /usr/share/mime
 
     --ro-bind /etc/ld-musl-aarch64.path /etc/ld-musl-aarch64.path
     --ro-bind /etc/ssl /etc/ssl
