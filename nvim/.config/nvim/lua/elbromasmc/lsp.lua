@@ -28,6 +28,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 vim.diagnostic.config({ virtual_lines = true })
 
 -- Custom configuration
+vim.lsp.config('clangd', {
+    cmd = { 'clangd', '--fallback-style=webkit' },
+})
+
 vim.lsp.config('texlab', {
     settings = {
         texlab = {
