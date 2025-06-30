@@ -25,7 +25,8 @@ bwrap_arguments=(
     --setenv CC "clang"
     --setenv LD "ld.lld"
     --setenv NPM_CONFIG_PREFIX "$HOME/.npm-global"
-    --setenv PATH "/usr/bin:/usr/lib/llvm/19/bin:$HOME/go/bin:$HOME/.npm-global/bin:$HOME/.local/bin"
+    # Remember to update llvm
+    --setenv PATH "/usr/bin:/usr/lib/llvm/20/bin:$HOME/go/bin:$HOME/.npm-global/bin:$HOME/.local/bin"
 
     # Read only binds
     --ro-bind /usr/lib /usr/lib
@@ -44,19 +45,28 @@ bwrap_arguments=(
     --ro-bind /usr/share/X11/xkb /usr/share/X11/xkb
     --ro-bind /usr/share/mime /usr/share/mime
 
+    --ro-bind /usr/share/glvnd /usr/share/glvnd
+
     --ro-bind /etc/ld-musl-aarch64.path /etc/ld-musl-aarch64.path
     --ro-bind /etc/ssl /etc/ssl
     --ro-bind /etc/resolv.conf /etc/resolv.conf
     --ro-bind /etc/fonts /etc/fonts
 
+    --ro-bind-try /sys/dev/char /sys/dev/char
+    --ro-bind-try /sys/devices/platform /sys/devices/platform # Rockchip specific
+
+    --ro-bind-try "$XDG_RUNTIME_DIR/pulse" "$XDG_RUNTIME_DIR/pulse"
+    --ro-bind "$XDG_RUNTIME_DIR/pipewire-0" "$XDG_RUNTIME_DIR/pipewire-0"
     --ro-bind-try "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"
 
     # Device binds
+    --dev-bind-try /dev/dri /dev/dri
 
     # Read write binds
     --bind "$HOME/Documents/tests" "$HOME/Documents/tests"
 
     # Miscellaneous
+    --ro-bind /usr/share/pipewire /usr/share/pipewire
     --chdir "$(pwd)"
 )
 

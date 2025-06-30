@@ -75,7 +75,8 @@ bwrap_arguments=(
     --setenv CC "clang"
     --setenv LD "ld.lld"
     --setenv NPM_CONFIG_PREFIX "$HOME/.npm-global"
-    --setenv PATH "/usr/bin:/usr/lib/llvm/19/bin:$HOME/go/bin:$HOME/.npm-global/bin:$HOME/.cargo/bin:$HOME/.local/bin"
+    # Remember to update llvm
+    --setenv PATH "/usr/bin:/usr/lib/llvm/20/bin:$HOME/go/bin:$HOME/.npm-global/bin:$HOME/.cargo/bin:$HOME/.local/bin:$HOME/.ghcup/bin"
 
     # Read only binds
     --ro-bind /usr/lib /usr/lib
@@ -115,6 +116,7 @@ bwrap_arguments=(
     # Read write binds
     --bind "$HOME/Documents/projects" "$HOME/Documents/projects"
     --bind "$HOME/Documents/tests" "$HOME/Documents/tests"
+    --bind "$HOME/Documents/homework" "$HOME/Documents/homework"
 
     # Miscellaneous
     --chdir "$(pwd)"
