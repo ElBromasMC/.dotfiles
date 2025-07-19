@@ -45,7 +45,7 @@ vim.lsp.config('texlab', {
                 executable = 'zathura',
                 args = { '--synctex-forward', '%l:1:%f', '%p' },
             },
-            diagnosticsDelay = 1500,
+            -- diagnosticsDelay = 1500,
         },
     },
 })
