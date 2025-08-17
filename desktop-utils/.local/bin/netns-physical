@@ -1,4 +1,4 @@
 #!/bin/bash
 
-exec doas /usr/bin/ip netns exec physical /usr/bin/doas -u ander -- bash
+exec doas /usr/bin/ip netns exec physical /usr/bin/doas -u ander -- /usr/bin/bash
 
