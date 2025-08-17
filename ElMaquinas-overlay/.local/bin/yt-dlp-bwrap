@@ -61,9 +61,9 @@ firefox_bwrap_arguments=(
     --ro-bind /usr/share/ca-certificates /usr/share/ca-certificates
     --ro-bind /etc/ssl /etc/ssl
     --ro-bind /sys/dev/char /sys/dev/char
-    --ro-bind /sys/devices/platform /sys/devices/platform # Rockchip specific
-    --ro-bind "$XDG_RUNTIME_DIR/pulse" "$XDG_RUNTIME_DIR/pulse"
-    --ro-bind "$XDG_RUNTIME_DIR/pipewire-0" "$XDG_RUNTIME_DIR/pipewire-0"
+    --ro-bind-try /sys/devices/platform /sys/devices/platform # Rockchip specific
+    --ro-bind-try "$XDG_RUNTIME_DIR/pulse" "$XDG_RUNTIME_DIR/pulse"
+    --ro-bind-try "$XDG_RUNTIME_DIR/pipewire-0" "$XDG_RUNTIME_DIR/pipewire-0"
     --ro-bind "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"
 
     # Device binds
@@ -74,8 +74,7 @@ firefox_bwrap_arguments=(
 
     --
 
-    /bin/bash
-    "$@"
+    "${@:-/bin/bash}"
 )
 
 bwrap "${firefox_bwrap_arguments[@]}"

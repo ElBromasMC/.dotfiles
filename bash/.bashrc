@@ -14,6 +14,10 @@ if [[ $- != *i* ]] ; then
     return
 fi
 
+detach() {
+    "$@" >& /dev/null < /dev/null &
+}
+
 # Configure tab completion
 # Source: https://wiki.gentoo.org/wiki/Doas#Bash_tab_completion
 complete -F _root_command doas
