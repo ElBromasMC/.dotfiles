@@ -21,7 +21,7 @@ set_path(){
 # Set custom PATH
 set_path ~/.local/bin
 #set_path ~/go/bin ~/.cargo/bin
-set_path ~/.local/share/flatpak/exports/bin /var/lib/flatpak/exports/bin
+#set_path ~/.local/share/flatpak/exports/bin /var/lib/flatpak/exports/bin
 
 # Set and create a dumb runtime dir if not defined
 if test -z "${XDG_RUNTIME_DIR}"; then

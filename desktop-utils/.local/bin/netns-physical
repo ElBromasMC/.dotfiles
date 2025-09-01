@@ -1,4 +1,13 @@
 #!/bin/bash
 
-exec doas /usr/bin/ip netns exec physical /usr/bin/doas -u $USER -- /usr/bin/bash
+set -euo pipefail
+
+NS="${NS:-physical}"
+USER_NAME="${USER:-$(id -un)}"
+
+if [[ -e "/var/run/netns/${NS}" ]]; then
+    exec doas /usr/bin/ip netns exec "${NS}" /usr/bin/doas -u "${USER_NAME}" -- /usr/bin/bash
+else
+    exec /usr/bin/bash
+fi
 
