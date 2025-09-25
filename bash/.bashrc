@@ -29,3 +29,7 @@ alias ssh='TERM=xterm-256color ssh'
 alias poweroff='doas /sbin/poweroff'
 alias reboot='doas /sbin/reboot'
 
+alias yt='detach yt-dlp-bwrap mpv'
+
+set -o vi
+
