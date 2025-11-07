@@ -13,7 +13,7 @@ set $mod Mod4
 ## Your preferred applications
 
 set $term foot
-set $menu wmenu-run
+set $menu wmenu-run -f "JetBrains Mono 10"
 set $screenshot grimshot savecopy anything
 set $browser firefox-bwrap
 

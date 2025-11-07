@@ -30,6 +30,7 @@ alias poweroff='doas /sbin/poweroff'
 alias reboot='doas /sbin/reboot'
 
 alias yt='detach yt-dlp-bwrap mpv'
+alias enter='tmux new -A -s'
 
 set -o vi
 
