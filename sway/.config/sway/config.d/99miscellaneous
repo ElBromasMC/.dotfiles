@@ -4,6 +4,7 @@
 font pango:JetBrains Mono 10
 
 # Cursor theme
+
 seat seat0 xcursor_theme Adwaita 24
 
 # Personal monitor

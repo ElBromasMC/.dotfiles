@@ -5,7 +5,8 @@
 
 bindsym $mod+Return exec $term
 bindsym $mod+d exec $menu
-bindsym $mod+F10 exec $screenshot
+bindsym $mod+F10 exec $screenshot_copy
+bindsym $mod+Shift+F10 exec $screenshot_savecopy
 bindsym $mod+i exec $browser
 
 ## Volume control (wireplumber)

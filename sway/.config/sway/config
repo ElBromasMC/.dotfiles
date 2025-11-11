@@ -14,7 +14,8 @@ set $mod Mod4
 
 set $term foot
 set $menu wmenu-run -f "JetBrains Mono 10"
-set $screenshot grimshot savecopy anything
+set $screenshot_copy grimshot copy anything
+set $screenshot_savecopy grimshot savecopy anything
 set $browser firefox-bwrap
 
 ## Default wallpaper

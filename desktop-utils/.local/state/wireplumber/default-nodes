@@ -1,0 +1,4 @@
+[default-nodes]
+default.configured.audio.sink=alsa_output.pci-0000_c3_00.6.HiFi__Speaker__sink
+default.configured.audio.sink.0=alsa_output.pci-0000_c3_00.1.HiFi__HDMI4__sink
+default.configured.audio.sink.1=alsa_output.pci-0000_c3_00.1.HiFi__HDMI2__sink

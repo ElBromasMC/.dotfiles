@@ -1,0 +1,51 @@
+#!/bin/bash
+set -euo pipefail
+
+exec "$HOME/.local/bin/netns-physical" <<'OUTER'
+bash -l <<'INNER'
+set -euo pipefail
+
+### --- User settings ---
+ST_BIN="/usr/bin/syncthing"
+ST_HOME_DIR="$HOME/.config/syncthing"
+ST_GUI_ADDRESS="http://127.0.0.1:8384"
+ST_LOG="$HOME/.local/var/log/syncthing.log"
+ST_BWRAP="/usr/bin/bwrap"
+# Example: ST_OPTS='-logflags=0 -paused'
+ST_OPTS=""
+
+# Permissions & scheduling
+umask 007
+
+# Make sure paths exist (log file will be created by OpenRC redirection)
+mkdir -p "$ST_HOME_DIR" "$(dirname "$ST_LOG")" "$HOME/.local/var/log"
+
+# Ensure bind targets exist so bwrap doesn't fail
+mkdir -p "$HOME/Documents/Notes" "$HOME/Documents/KeePass" "$HOME/Sync"
+
+# Build and exec bubblewrap
+exec "$ST_BWRAP" \
+  --die-with-parent \
+  --unshare-all \
+  --share-net \
+  --hostname syncthing \
+  --proc /proc \
+  --dev /dev \
+  --tmpfs /tmp \
+  --symlink /usr/lib /lib \
+  --symlink /usr/bin /bin \
+  --symlink /usr/bin /sbin \
+  --ro-bind /usr/lib /usr/lib \
+  --ro-bind /usr/bin /usr/bin \
+  --ro-bind /etc/ssl /etc/ssl \
+  --ro-bind /etc/resolv.conf /etc/resolv.conf \
+  --dir "$HOME" \
+  --bind "$ST_HOME_DIR" "$HOME/.config/syncthing" \
+  --bind "$HOME/Documents/Notes"   "$HOME/Documents/Notes" \
+  --bind "$HOME/Documents/KeePass" "$HOME/Documents/KeePass" \
+  --bind "$HOME/Sync"              "$HOME/Sync" \
+  -- "$ST_BIN" -no-browser -home "$HOME/.config/syncthing" -gui-address "$ST_GUI_ADDRESS" \
+  $ST_OPTS
+INNER
+OUTER
+
