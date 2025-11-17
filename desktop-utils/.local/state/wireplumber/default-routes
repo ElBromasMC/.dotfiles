@@ -1,4 +1,0 @@
-[default-routes]
-alsa_card.pci-0000_c3_00.6:input:\oIn\c\sMic1={"channelVolumes":[1.000000, 1.000000], "channelMap":["FL", "FR"], "mute":true, "latencyOffsetNsec":0}
-alsa_card.pci-0000_c3_00.6:output:\oOut\c\sSpeaker={"mute":false, "channelMap":["FL", "FR"], "latencyOffsetNsec":0, "channelVolumes":[0.063997, 0.063997]}
-alsa_card.pci-0000_c3_00.6:profile:HiFi\s(Mic1,\sMic2,\sSpeaker)=["[Out] Speaker"]
