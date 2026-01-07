@@ -44,7 +44,7 @@ exec "$ST_BWRAP" \
   --bind "$HOME/Documents/Notes"   "$HOME/Documents/Notes" \
   --bind "$HOME/Documents/KeePass" "$HOME/Documents/KeePass" \
   --bind "$HOME/Sync"              "$HOME/Sync" \
-  -- "$ST_BIN" -no-browser -home "$HOME/.config/syncthing" -gui-address "$ST_GUI_ADDRESS" \
+  -- "$ST_BIN" serve -no-browser -home "$HOME/.config/syncthing" -gui-address "$ST_GUI_ADDRESS" \
   $ST_OPTS
 INNER
 OUTER
