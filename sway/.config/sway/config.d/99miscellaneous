@@ -1,15 +1,11 @@
 
 # Font configuration
 
-font pango:JetBrains Mono 10
+font pango:Iosevka 10
 
 # Cursor theme
 
 seat seat0 xcursor_theme Adwaita 24
-
-# Personal monitor
-
-output HDMI-A-1 resolution 1920x1080@120Hz
 
 # Miscellaneous
 

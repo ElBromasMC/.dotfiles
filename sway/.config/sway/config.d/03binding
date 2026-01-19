@@ -4,6 +4,7 @@
 ## Your favorite programs
 
 bindsym $mod+Return exec $term
+bindsym $mod+m exec $editor
 bindsym $mod+d exec $menu
 bindsym $mod+p exec $passmenu
 bindsym $mod+F10 exec $screenshot_copy

@@ -13,9 +13,10 @@ set $mod Mod4
 ## Your preferred applications
 
 set $term foot
-set $menu wmenu-run -f "JetBrains Mono 14" \
+set $editor emacsclient -c
+set $menu wmenu-run -f "Iosevka 14" \
     -N 1a1b26 -n c0caf5 -M 1a1b26 -m bb9af7 -S 7aa2f7 -s 1a1b26
-set $passmenu passmenu -f "JetBrains Mono 14" \
+set $passmenu passmenu -f "Iosevka 14" \
     -N 1a1b26 -n c0caf5 -M 1a1b26 -m bb9af7 -S 7aa2f7 -s 1a1b26
 set $screenshot_copy grimshot copy anything
 set $screenshot_savecopy grimshot savecopy anything
