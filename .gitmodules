@@ -4,3 +4,6 @@
 [submodule "nvim/.config/nvim/pack/nvim/start/fzf-lua"]
 	path = nvim/.config/nvim/pack/nvim/start/fzf-lua
 	url = https://github.com/ibhagwan/fzf-lua.git
+[submodule "nvim/.config/nvim/pack/nvim/start/modus-themes"]
+	path = nvim/.config/nvim/pack/nvim/start/modus-themes
+	url = https://github.com/miikanissi/modus-themes.nvim.git

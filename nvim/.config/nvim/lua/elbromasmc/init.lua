@@ -8,3 +8,5 @@ require('elbromasmc.remap')
 require('elbromasmc.treesitter')
 require('elbromasmc.lsp')
 
+vim.cmd([[colorscheme modus_vivendi]])
+
