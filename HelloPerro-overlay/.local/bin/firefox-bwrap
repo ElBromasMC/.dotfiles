@@ -109,6 +109,7 @@ firefox_bwrap_arguments=(
 
     # Device binds
     --dev-bind /dev/dri /dev/dri
+    #--dev-bind /dev/video0 /dev/video0
 
     # Read write binds
 
