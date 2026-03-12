@@ -15,7 +15,7 @@ if [[ $- != *i* ]] ; then
 fi
 
 detach() {
-    "$@" >& /dev/null < /dev/null &
+    setsid "$@" >& /dev/null < /dev/null
 }
 
 # Configure tab completion

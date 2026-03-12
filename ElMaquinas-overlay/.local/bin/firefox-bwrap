@@ -119,9 +119,9 @@ firefox_bwrap_arguments=(
     --ro-bind /usr/share/pipewire /usr/share/pipewire
 
     # Required for Zink
-    --ro-bind /usr/share/vulkan /usr/share/vulkan
-    --setenv MESA_LOADER_DRIVER_OVERRIDE zink
-    --setenv MESA_GL_VERSION_OVERRIDE 4.5
+    #--ro-bind /usr/share/vulkan /usr/share/vulkan
+    #--setenv MESA_LOADER_DRIVER_OVERRIDE zink
+    #--setenv MESA_GL_VERSION_OVERRIDE 4.5
 
     --
 

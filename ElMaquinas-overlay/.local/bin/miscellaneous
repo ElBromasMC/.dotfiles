@@ -8,7 +8,7 @@ bwrap_arguments=(
     # Isolation
     --die-with-parent
     --unshare-all
-    --share-net
+    #--share-net
     --hostname miscellaneous
     #--new-session
 
