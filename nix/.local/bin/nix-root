@@ -1,0 +1,11 @@
+#!/bin/sh
+
+NIX_SERVICE="nix-service"
+
+exec podman exec -it \
+    --user root \
+    -w /root \
+    -e NIX_REMOTE=daemon \
+    "$NIX_SERVICE" \
+    nix-shell -p busybox neovim
+

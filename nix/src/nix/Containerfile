@@ -1,0 +1,11 @@
+FROM docker.io/nixos/nix:latest
+
+RUN echo "runner:x:1000:1000::/home/runner:/bin/sh" >> /etc/passwd \
+    && echo "runner:x:1000:" >> /etc/group \
+    && mkdir -p /home/runner \
+    && chown runner:runner /home/runner
+
+COPY --chown=root:root --chmod=644 nix.conf /etc/nix/nix.conf
+
+ENTRYPOINT ["nix-daemon"]
+
