@@ -1,8 +1,8 @@
 #!/sbin/openrc-run
 
-CONTAINER_RESPAWN_MAX=${CONTAINER_RESPAWN_MAX:-"3"}
-CONTAINER_RESPAWN_PERIOD=${CONTAINER_RESPAWN_PERIOD:-"5"}
-CONTAINER_RETRY=${CONTAINER_RETRY:-"TERM/30/KILL/5"}
+: ${respawn_max="3"}
+: ${respawn_period="5"}
+: ${retry="TERM/30/KILL/5"}
 
 container_name="${RC_SVCNAME#container.}"
 
@@ -12,10 +12,6 @@ description="Supervised Podman Container"
 supervisor="supervise-daemon"
 command="/usr/bin/podman"
 command_args="start --attach ${container_name}"
-
-respawn_max="${CONTAINER_RESPAWN_MAX}"
-respawn_period="${CONTAINER_RESPAWN_PERIOD}"
-retry="${CONTAINER_RETRY}"
 
 start_pre() {
     if [ "$container_name" = "$RC_SVCNAME" ]; then

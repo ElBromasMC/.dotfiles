@@ -1,0 +1,34 @@
+#!/sbin/openrc-run
+
+: ${POD_TIMEOUT="30"}
+
+pod_name="${RC_SVCNAME#pod.}"
+
+name="${pod_name} Pod"
+description="Podman Pod via Conmon PID"
+
+infra_id=$(podman pod inspect "$pod_name" --format '{{.InfraContainerID}}' 2>/dev/null)
+pidfile=$(podman container inspect "$infra_id" --format '{{.ConmonPidFile}}' 2>/dev/null)
+
+command="/usr/bin/podman"
+command_args="pod start ${pod_name}"
+
+start_pre() {
+    if [ "$pod_name" = "$RC_SVCNAME" ]; then
+        eerror "The base template '${RC_SVCNAME}' cannot be started directly."
+        eerror "You must create a symbolic link with the 'pod.' prefix."
+        return 1
+    fi
+
+    if [ -z "$pidfile" ]; then
+        eerror "Could not locate the ConmonPidFile for pod '${pod_name}'."
+        eerror "Please ensure the pod exists: podman pod create --name ${pod_name}"
+        return 1
+    fi
+}
+
+stop() {
+    ebegin "Stopping Podman pod: ${pod_name}"
+    podman pod stop --time "${POD_TIMEOUT}" "$pod_name" >/dev/null
+    eend $?
+}
