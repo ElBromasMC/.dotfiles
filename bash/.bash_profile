@@ -18,11 +18,6 @@ set_path(){
     done
 }
 
-# Set custom PATH
-set_path ~/.local/bin
-#set_path ~/go/bin ~/.cargo/bin
-#set_path ~/.local/share/flatpak/exports/bin /var/lib/flatpak/exports/bin
-
 # Set and create a dumb runtime dir if not defined
 if test -z "${XDG_RUNTIME_DIR}"; then
     export XDG_RUNTIME_DIR=/tmp/"${UID}"-runtime-dir
@@ -34,10 +29,13 @@ fi
 
 export EDITOR=/bin/nvim
 export VISUAL=/bin/nvim
-
 export COMPOSE_PROVIDER=/bin/podman-compose
 
+set_path ~/.local/bin
+#set_path ~/go/bin ~/.cargo/bin
+#set_path ~/.local/share/flatpak/exports/bin /var/lib/flatpak/exports/bin
 
+[ -f "$HOME/.env" ] && . "$HOME/.env"
 
 #
 # This file is sourced by bash for login shells.  The following line
