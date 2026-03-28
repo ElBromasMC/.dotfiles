@@ -1,0 +1,4 @@
+#!/bin/sh
+
+exec doas /bin/sh -c 'echo mem > /sys/power/state'
+
