@@ -6,7 +6,7 @@ NIX_SERVICE="nix-service"
 NIX_VOLUME="nix-store"
 NIX_IMAGE="nix-podman"
 
-exec podman create -d \
+exec podman create \
     --name "$NIX_SERVICE" \
     --privileged \
     --userns=keep-id:uid=1000,gid=1000 \
