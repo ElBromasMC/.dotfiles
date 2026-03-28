@@ -1,0 +1,31 @@
+#!/sbin/openrc-run
+
+CONTAINER_RESPAWN_MAX=${CONTAINER_RESPAWN_MAX:-"3"}
+CONTAINER_RESPAWN_PERIOD=${CONTAINER_RESPAWN_PERIOD:-"5"}
+CONTAINER_RETRY=${CONTAINER_RETRY:-"TERM/30/KILL/5"}
+
+container_name="${RC_SVCNAME#container.}"
+
+name="${container_name} Container"
+description="Supervised Podman Container"
+
+supervisor="supervise-daemon"
+command="/usr/bin/podman"
+command_args="start --attach ${container_name}"
+
+respawn_max="${CONTAINER_RESPAWN_MAX}"
+respawn_period="${CONTAINER_RESPAWN_PERIOD}"
+retry="${CONTAINER_RETRY}"
+
+start_pre() {
+    if [ "$container_name" = "$RC_SVCNAME" ]; then
+        eerror "The base template '${RC_SVCNAME}' cannot be started directly."
+        eerror "You must create a symbolic link with the 'container.' prefix."
+        return 1
+    fi
+
+    if ! podman container exists "$container_name" >/dev/null 2>&1; then
+        eerror "Podman container '${container_name}' does not exist."
+        return 1
+    fi
+}
