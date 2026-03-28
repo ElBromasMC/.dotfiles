@@ -60,18 +60,18 @@ bindsym $mod+minus scratchpad show
 
 ## Resize mode
 
-bindsym $mod+r mode "resize"
+#bindsym $mod+r mode "resize"
 
-mode "resize" {
-    bindsym Return mode "default"
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
-}
+#mode "resize" {
+#    bindsym Return mode "default"
+#    bindsym $left resize shrink width 10px
+#    bindsym $down resize grow height 10px
+#    bindsym $up resize shrink height 10px
+#    bindsym $right resize grow width 10px
+#}
 
 ## Splits
 
-bindsym $mod+b splith
-bindsym $mod+v splitv
+#bindsym $mod+b splith
+#bindsym $mod+v splitv
 
