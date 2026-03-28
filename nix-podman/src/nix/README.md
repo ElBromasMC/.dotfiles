@@ -10,15 +10,17 @@ to run the service in a diferent user (for example `nix`).
 Add the following to your `/etc/doas.conf`.
 
 ```
-permit nopass <your_user> as nix
+permit nopass :nix as nix
 ```
 
-Create a shared directory (for example `/opt/nix`).
+Create a shared directory (for example `/opt/nix`) and give your user access to
+it.
 
 ```bash
 # mkdir /opt/nix
-# chown ander:nix /opt/nix
+# chown nix:nix /opt/nix
 # chmod 2770 /opt/nix
+# usermod -aG nix <your_user>
 ```
 
 Enable a user service to manage the start and stop of the nix service.

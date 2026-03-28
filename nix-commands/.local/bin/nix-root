@@ -4,6 +4,7 @@ NIX_SERVICE="nix-service"
 
 if [ -n "$NIX_USER" ]; then
     exec doas -u "$NIX_USER" bash -l -c '
+        cd $HOME; \
         exec podman exec -it \
             --user root \
             -w /root \
