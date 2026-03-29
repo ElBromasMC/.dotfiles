@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo disk | doas /usr/bin/tee /sys/power/state
+
