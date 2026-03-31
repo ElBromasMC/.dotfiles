@@ -31,7 +31,7 @@ setfacl -d -m "g:$(id -g -n):rwx" "${HOST_NIX_ROOT}/home/${CONTAINER_RUNNER}/sha
 exec podman run --rm \
     --userns=keep-id:uid=1000,gid=1000 \
     -v "${HOST_NIX_ROOT}/nix":/tmp/nix \
-    "$NIX_IMAGE" \
     --entrypoint "cp" \
+    "$NIX_IMAGE" \
     -a /nix/. /tmp/nix
 
