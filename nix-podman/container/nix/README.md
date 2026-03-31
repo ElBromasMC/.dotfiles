@@ -13,17 +13,18 @@ Add the following to your `/etc/doas.conf`.
 permit nopass :nix as nix
 ```
 
-Create a shared directory (for example `/opt/nix`) and give your user access to
-it.
+Setup nix directory.
 
 ```bash
-# mkdir /opt/nix
+# mkdir -p /opt/nix
 # chown nix:nix /opt/nix
-# chmod 2770 /opt/nix
 # usermod -aG nix <your_user>
 ```
 
-Enable a user service to manage the start and stop of the nix service.
+Run `setup.sh` as `nix` user to create the directory structure in `/opt/nix`
+and to copy the needed files. Then run `create.sh` to create the container.
+
+Enable a user service to manage the start and stop of the nix container.
 
 To run nix commands from your user define `NIX_USER=nix` as environment
 variable.
