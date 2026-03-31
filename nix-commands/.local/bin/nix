@@ -1,8 +1,11 @@
 #!/bin/bash
 
+HOST_NIX_ROOT="/opt/nix"
+CONTAINER_RUNNER="runner"
 NIX_SERVICE="nix-service"
-HOST_SHARED_DIR="/opt/nix"
-CONTAINER_BASE_DIR="/home/runner"
+
+HOST_SHARED_DIR="${HOST_NIX_ROOT}/home/${CONTAINER_RUNNER}"
+CONTAINER_BASE_DIR="/home/${CONTAINER_RUNNER}"
 
 CMD="$(basename "$0")"
 
