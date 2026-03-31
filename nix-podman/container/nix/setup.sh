@@ -14,7 +14,7 @@ if [ -z "$(find "${HOST_NIX_ROOT}" -prune -user "$(id -u)" -print 2>/dev/null)" 
     exit 1
 fi
 
-if [ "$(ls -A "${HOST_NIX_ROOT}/nix")" ]; then
+if [ "$(ls -A "${HOST_NIX_ROOT}/nix" 2>/dev/null)" ]; then
     echo "Aborting: '${HOST_NIX_ROOT}/nix' is not empty." >&2
     exit 1
 fi
@@ -32,5 +32,6 @@ exec podman run --rm \
     --userns=keep-id:uid=1000,gid=1000 \
     -v "${HOST_NIX_ROOT}/nix":/tmp/nix \
     "$NIX_IMAGE" \
-    cp -a /nix/. /tmp/nix
+    --entrypoint "cp" \
+    -a /nix/. /tmp/nix
 
