@@ -1,0 +1,37 @@
+#!/bin/bash
+
+HOST_NIX_ROOT="/opt/nix"
+CONTAINER_RUNNER="runner"
+NIX_SERVICE="nix-service"
+
+HOST_SHARED_DIR="${HOST_NIX_ROOT}/home/${CONTAINER_RUNNER}"
+CONTAINER_BASE_DIR="/home/${CONTAINER_RUNNER}"
+
+case "$PWD" in
+    "$HOST_SHARED_DIR"/*)
+        REL_PATH="${PWD#"$HOST_SHARED_DIR"}"
+        CONTAINER_WORKDIR="${CONTAINER_BASE_DIR}${REL_PATH}"
+        ;;
+    *)
+        CONTAINER_WORKDIR="$CONTAINER_BASE_DIR"
+        ;;
+esac
+
+if [ -n "$NIX_USER" ]; then
+    exec doas -u "$NIX_USER" bash -l -c '
+        cd $HOME; \
+        exec podman exec -i \
+            --user runner \
+            -w "$1" \
+            -e NIX_REMOTE=daemon \
+            "$2" "$3" "${@:4}"
+    ' bash "$CONTAINER_WORKDIR" "$NIX_SERVICE" "$@"
+
+else
+    exec podman exec -i \
+        --user runner \
+        -w "$CONTAINER_WORKDIR" \
+        -e NIX_REMOTE=daemon \
+        "$NIX_SERVICE" "$@"
+fi
+
