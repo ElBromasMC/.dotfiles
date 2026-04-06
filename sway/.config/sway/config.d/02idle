@@ -19,7 +19,7 @@
 #    resume 'swaymsg "output * power on"'
 
 exec swayidle -w \
-    timeout 360 'swaylock -f -c 000000' \
-    timeout 720 'swaymsg "output * power off"' \
+    timeout 300 'swaymsg "output * power off"' \
+    timeout 720 'swaylock -f -c 000000' \
     resume 'swaymsg "output * power on"'
 
