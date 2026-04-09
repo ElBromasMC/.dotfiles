@@ -37,10 +37,8 @@ set_path ~/.local/bin
 
 [ -f "$HOME/.env" ] && . "$HOME/.env"
 
-#
 # This file is sourced by bash for login shells.  The following line
 # runs your .bashrc and is recommended by the bash info pages.
-#
 if [[ -f ~/.bashrc ]] ; then
 	. ~/.bashrc
 fi
@@ -50,11 +48,6 @@ if [ -z "${WAYLAND_DISPLAY}" ] && [ "$(tty)" = "/dev/tty1" ]; then
     export XDG_CURRENT_DESKTOP=sway
     export ELECTRON_OZONE_PLATFORM_HINT=wayland
     #export WLR_RENDERER=vulkan
-
-    # Define "well known" user directories
-    export XDG_PICTURES_DIR="${HOME}/Pictures"
-    export XDG_SCREENSHOTS_DIR="${XDG_PICTURES_DIR}/Screenshots"
-
-    exec dbus-run-session sway > ~/sway.log 2>&1
+    export XDG_SCREENSHOTS_DIR="${XDG_SCREENSHOTS_DIR:=${HOME}}"
+    exec dbus-run-session sway > "${SWAY_LOG:=${HOME}/sway.log}" 2>&1
 fi
-

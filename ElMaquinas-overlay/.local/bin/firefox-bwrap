@@ -112,11 +112,11 @@ firefox_bwrap_arguments=(
 
     # Miscellaneous
     # Bind Downloads
-    --bind "$HOME/Downloads" "$HOME/Downloads"
+    #--bind "$HOME/Downloads" "$HOME/Downloads"
     # Allow access to portals
-    --ro-bind "$APP_SOCKET" "$DBUS_PATH"
+    #--ro-bind "$APP_SOCKET" "$DBUS_PATH"
     # Required for screen sharing in Sway WM
-    --ro-bind /usr/share/pipewire /usr/share/pipewire
+    #--ro-bind /usr/share/pipewire /usr/share/pipewire
 
     # Required for Zink
     #--ro-bind /usr/share/vulkan /usr/share/vulkan
