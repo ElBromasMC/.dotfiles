@@ -1,0 +1,20 @@
+#!/bin/sh
+
+tmux_start() {
+    if [ -z "$1" ] || [ -z "$2" ]; then
+        return 1
+    fi
+    if [ ! -d "$2" ]; then
+        return 1
+    fi
+    if tmux has-session -t "$1" >/dev/null 2>&1; then
+        return 1
+    fi
+
+    tmux new-session -d -s "$1" -c "$2"
+}
+
+tmux_start misc ~
+tmux_start notes ~/notes
+tmux_start update ~
+
