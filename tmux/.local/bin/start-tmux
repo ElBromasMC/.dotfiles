@@ -17,4 +17,5 @@ tmux_start() {
 tmux_start misc ~
 tmux_start notes ~/notes
 tmux_start update ~
+tmux_start nix /opt/nix/home/runner/shared
 
